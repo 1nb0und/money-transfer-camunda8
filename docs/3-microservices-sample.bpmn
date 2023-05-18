@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Web Modeler" exporterVersion="d67012f" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.2.0" camunda:diagramRelationId="5185a998-1603-4ccf-b6d0-8cbeafd0cdce">
+  <bpmn:process id="template-microservice-tutorial" name="Microservice Orchestration Tutorial " isExecutable="true">
+    <bpmn:startEvent id="StartEvent" name="Start">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent" targetRef="Run_microservice" />
+    <bpmn:endEvent id="EndEvent" name="End">
+      <bpmn:incoming>Flow_0atm7h7</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Run_microservice" targetRef="Activity_049s0qi" />
+    <bpmn:serviceTask id="Run_microservice" name="Call Enricher">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="enricher" retries="3" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_049s0qi" name="Call Validator">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="validator" retries="3" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_00iijsl</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_00iijsl" sourceRef="Activity_049s0qi" targetRef="Activity_0wkg5pn" />
+    <bpmn:serviceTask id="Activity_0wkg5pn" name="Call Bank-Connector">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="bank-connector" retries="3" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_00iijsl</bpmn:incoming>
+      <bpmn:outgoing>Flow_0atm7h7</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0atm7h7" sourceRef="Activity_0wkg5pn" targetRef="EndEvent" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="template-microservice-tutorial">
+      <bpmndi:BPMNShape id="Activity_1gyogab_di" bpmnElement="Run_microservice">
+        <dc:Bounds x="290" y="60" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1gnkrle" bpmnElement="Activity_049s0qi">
+        <dc:Bounds x="490" y="60" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_196wqsu_di" bpmnElement="EndEvent">
+        <dc:Bounds x="912" y="82" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="920" y="125" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1f5av7c" bpmnElement="Activity_0wkg5pn">
+        <dc:Bounds x="700" y="60" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent">
+        <dc:Bounds x="152" y="82" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="158" y="125" width="24" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1j79dnw_di" bpmnElement="Flow_1">
+        <di:waypoint x="188" y="100" />
+        <di:waypoint x="290" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0opw5o8_di" bpmnElement="Flow_2">
+        <di:waypoint x="390" y="100" />
+        <di:waypoint x="490" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_00iijsl_di" bpmnElement="Flow_00iijsl">
+        <di:waypoint x="590" y="100" />
+        <di:waypoint x="700" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0atm7h7_di" bpmnElement="Flow_0atm7h7">
+        <di:waypoint x="800" y="100" />
+        <di:waypoint x="912" y="100" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
